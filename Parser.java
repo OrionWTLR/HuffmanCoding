@@ -1,20 +1,21 @@
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Parser {
     String filename;
-    InputStream file;
+    InputStream fileIn;
+    OutputStream fileOut;
     public Parser(){
 
     }
     public Parser(String fn){
         filename = fn;
-        file = Parser.class.getResourceAsStream(filename);
     }
 
     public ArrayList<String> extractString(){
-        Scanner sc = new Scanner(file);
+        fileIn = Parser.class.getResourceAsStream(filename);
+        Scanner sc = new Scanner(fileIn);
 
         ArrayList<String> lineByLine = new ArrayList<>();
         while(sc.hasNextLine()){
@@ -25,6 +26,18 @@ public class Parser {
         sc.close();
 
         return lineByLine;
+    }
+
+    public void writeInto(String words) {
+        try {
+            FileWriter myWriter = new FileWriter("encoded.txt");
+            myWriter.write(words);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
